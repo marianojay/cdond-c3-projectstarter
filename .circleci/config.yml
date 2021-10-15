@@ -59,7 +59,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
@@ -73,14 +73,13 @@ jobs:
       - run:    
           name: install nestjs
           command: | 
-            sudo npm install -g @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express          
+            sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express          
       - restore_cache:
           keys: [backend-build]
       - run:
           name: Back-end build
           command: |
             cd backend
-            sudo npm install -g npm-install-peers
             npm run build
       - save_cache:
           paths: [backend/node_modules]
