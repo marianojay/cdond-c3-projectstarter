@@ -65,7 +65,7 @@ jobs:
       - run:
           name: install npm dependencies
           command: |
-            sudo npm install -g npm
+            #sudo npm install -g npm
             #sudo npm install winston
             #sudo npm install -g yarn
             node -v
@@ -78,16 +78,17 @@ jobs:
       - run:    
           name: install nestjs
           command: | 
-            sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
-            sudo nest update
+            #sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
+            #sudo nest update
             #sudo npm install --save @nestjs
-            sudo npm audit fix
+            #sudo npm audit fix
       - restore_cache:
           keys: [backend-build]
       - run:
           name: Back-end build
           command: |
             cd backend
+            npm install
             npm run build
       - save_cache:
           paths: [backend/node_modules]
