@@ -71,9 +71,8 @@ jobs:
           command: | 
            sudo npm install -g typescript
       - run:    
-          name: install netsjs
+          name: install nestjs
           command: | 
-            cd backend
             sudo npm install -g @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express          
       - restore_cache:
           keys: [backend-build]
@@ -81,6 +80,7 @@ jobs:
           name: Back-end build
           command: |
             cd backend
+            sudo npm install -g npm-install-peers
             npm run build
       - save_cache:
           paths: [backend/node_modules]
