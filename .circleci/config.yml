@@ -74,7 +74,7 @@ jobs:
           name: install nestjs
           command: | 
             #sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm          
-            sudo npm install --save @nestjs/*
+            sudo npm install --save @nestjs
       - restore_cache:
           keys: [backend-build]
       - run:
