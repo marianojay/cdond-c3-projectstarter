@@ -43,18 +43,9 @@ jobs:
           command: |
             sudo npm install -g npm@5
       - run:
-           name: install-npm
-           command: npm install
-      - run:
           name: install webpacks
           command: |
             npm install webpack webpack-dev-server webpack-cli
-      # - run:
-      #     name: run npm start
-      #     command: |
-      #       cd frontend
-      #       sudo npm install -D webpack-cli
-      #       npm start
       - restore_cache:
           keys: [frontend-build]
       - run:
@@ -62,7 +53,8 @@ jobs:
           command: |
             cd frontend
             #https://answers.netlify.com/t/sh-1-webpack-not-found-for-react-deployment/23879/2
-            npm install --only=dev && npm run build
+            #npm install --only=dev && npm run build
+            npm run build
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
