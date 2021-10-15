@@ -75,14 +75,22 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-  # test-frontend:
-  #   docker:
-  #     # Docker image here
-  #   steps:
-  #     # Checkout code from git
-  #     # Restore from cache
-  #     # Your job code here
-                
+   test-frontend:
+     docker:
+       # Docker image here
+       - image: cimg/node:16.11
+     steps:
+       # Checkout code from git
+        - checkout
+       # Restore from cache
+        - restore_cache:
+          keys: [frontend-build]
+       # Your job code here
+        - run: 
+          name: Frontend test
+          command: |
+            cd frontend
+            npm test        
   # test-backend:
   #   docker:
   #     # Docker image here
