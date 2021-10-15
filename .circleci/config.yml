@@ -66,6 +66,10 @@ jobs:
           name: install npm dependencies
           command: |
             sudo npm install -g npm
+      - run:
+          name: install typescript
+          command: | 
+            sudo install typescript -g
       - restore_cache:
           keys: [backend-build]
       - run:
