@@ -59,14 +59,14 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node
     steps:
       - checkout
       - run:
           name: install npm dependencies
           command: |
             sudo npm install -g npm
-            sudo npm install winston
+            #sudo npm install winston
             #sudo npm install -g yarn
             node -v
             npm -v
