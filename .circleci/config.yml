@@ -80,6 +80,7 @@ jobs:
           command: | 
             sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
             #sudo npm install --save @nestjs
+            sudo npm audit fix
       - restore_cache:
           keys: [backend-build]
       - run:
