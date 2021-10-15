@@ -42,7 +42,7 @@ jobs:
           name: install npm dependencies
           command: |
             sudo npm install -g npm@5
-            sudo npm install webpack-dev-server -g
+      #      sudo npm install webpack-dev-server -g
       # - run:
       #     name: run npm start
       #     command: |
@@ -52,10 +52,12 @@ jobs:
       - restore_cache:
           keys: [frontend-build]
       - run:
+          name: install-npm-wee
+          command: npm install
+      - run:
           name: Build front-end
           command: |
             cd frontend
-            sudo npm install -D webpack-cli
             npm run build
       - save_cache:
           paths: [frontend/node_modules]
