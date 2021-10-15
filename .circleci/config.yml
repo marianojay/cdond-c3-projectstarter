@@ -45,7 +45,9 @@ jobs:
             sudo npm install webpack-dev-server -g
       - run:
           name: run npm start
-          command: 'npm start'
+          command: |
+            cd frontend
+            npm start
       - restore_cache:
           keys: [frontend-build]
       - run:
