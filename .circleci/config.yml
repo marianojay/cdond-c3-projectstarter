@@ -56,7 +56,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-          
+
   build-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -66,16 +66,16 @@ jobs:
           name: install npm dependencies
           command: |
             sudo npm install -g npm
-     - restore_cache:
-         keys: [backend-build]
-     - run:
-         name: Back-end build
-         command: |
+      - restore_cache:
+        keys: [backend-build]
+      - run:
+        name: Back-end build
+        command: |
            cd backend
            npm run build
-     - save_cache:
-         paths: [backend/node_modules]
-         key: backend-build
+      - save_cache:
+        paths: [backend/node_modules]
+        key: backend-build
 
   # test-frontend:
   #   docker:
