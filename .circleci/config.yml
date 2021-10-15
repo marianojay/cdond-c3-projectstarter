@@ -40,10 +40,10 @@ jobs:
       - checkout
       - run:
           name: install npm dependencies
-          command: 'npm install'
-      # - run:
-      #     name: run npm start
-      #     command: 'npm start'
+          command: 'npm install webpack-dev-server -g'
+      - run:
+          name: run npm start
+          command: 'npm start'
       - restore_cache:
           keys: [frontend-build]
       - run:
