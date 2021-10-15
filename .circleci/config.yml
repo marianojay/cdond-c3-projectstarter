@@ -43,6 +43,7 @@ jobs:
           command: |
             sudo npm install -g npm@5
             sudo npm install webpack-dev-server -g
+            sudo npm install -D webpack-cli
       - run:
           name: run npm start
           command: |
