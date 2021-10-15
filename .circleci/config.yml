@@ -42,7 +42,10 @@ jobs:
           name: install npm dependencies
           command: |
             sudo npm install -g npm@5
-            sudo npm install webpack-dev-server webpack --save-dev
+      - run:
+          name: install npm
+          command: |
+            sudo npm install webpack webpack-dev-server --save-dev
       # - run:
       #     name: run npm start
       #     command: |
