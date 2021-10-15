@@ -38,20 +38,21 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run:
-          name: install npm dependencies
-          command: |
-            sudo npm install -g npm
-      - run:
-          name: install webpacks
-          command: |
-            npm install webpack webpack-dev-server webpack-cli
+     # - run:
+     #     name: install npm dependencies
+     #     command: |
+     #       sudo npm install -g npm
+     # - run:
+     #     name: install webpacks
+     #     command: |
+     #       npm install webpack webpack-dev-server webpack-cli
       - restore_cache:
           keys: [frontend-build]
       - run:
           name: Build front-end
           command: |
             cd frontend
+            npm install
             npm run build
       - save_cache:
           paths: [frontend/node_modules]
@@ -62,26 +63,6 @@ jobs:
       - image: cimg/node:16.11
     steps:
       - checkout
-      #- run:
-      #    name: install npm dependencies
-      #    command: |
-      #      #sudo npm install -g npm
-      #      #sudo npm install winston
-      #      #sudo npm install -g yarn
-      #      node -v
-      #      npm -v
-      #      yarn -v
-      #- run:
-      #    name: install typescript
-      #    command: | 
-      #     sudo npm install -g typescript
-      #- run:    
-      #    name: install nestjs
-      #    command: | 
-      #      #sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
-      #      #sudo nest update
-      #      #sudo npm install --save @nestjs
-      #      #sudo npm audit fix
       - restore_cache:
           keys: [backend-build]
       - run:
@@ -295,7 +276,7 @@ jobs:
 workflows:
   default:
     jobs:
-      #- build-frontend
+      - build-frontend
       - build-backend
       # - test-frontend:
       #     requires: [build-frontend]
