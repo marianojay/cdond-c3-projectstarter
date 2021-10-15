@@ -69,7 +69,12 @@ jobs:
       - run:
           name: install typescript
           command: | 
-            sudo npm install -g typescript
+           sudo npm install -g typescript
+            - run:
+      - run:    
+          name: install netsjs
+          command: | 
+            sudo npm install -g @nestjs/cli
       - restore_cache:
           keys: [backend-build]
       - run:
@@ -282,7 +287,7 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
+      #- build-frontend
       - build-backend
       # - test-frontend:
       #     requires: [build-frontend]
