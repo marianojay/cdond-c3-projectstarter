@@ -46,9 +46,9 @@ jobs:
            name: install-npm
            command: npm install
       - run:
-          name: install npm
+          name: install webpacks
           command: |
-            sudo npm install webpack webpack-dev-server --save-dev
+            npm i -g webpack webpack-cli
       # - run:
       #     name: run npm start
       #     command: |
