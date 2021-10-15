@@ -70,7 +70,6 @@ jobs:
           name: install typescript
           command: | 
            sudo npm install -g typescript
-            - run:
       - run:    
           name: install netsjs
           command: | 
