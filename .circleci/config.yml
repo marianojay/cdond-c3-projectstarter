@@ -78,7 +78,8 @@ jobs:
       - run:    
           name: install nestjs
           command: | 
-            sudo npm install --save @nestjs/cli:8 @nestjs/core:8 @nestjs/swagger:8 @nestjs/common:8 @nestjs/platform-express:8 @nestjs/typeorm:8  @nestjs/passport:8 @nestjs/cqrs:8 @hapi/joi        
+            sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
+            sudo nest update
             #sudo npm install --save @nestjs
             sudo npm audit fix
       - restore_cache:
