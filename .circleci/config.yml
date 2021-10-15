@@ -38,14 +38,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-     # - run:
-     #     name: install npm dependencies
-     #     command: |
-     #       sudo npm install -g npm
-     # - run:
-     #     name: install webpacks
-     #     command: |
-     #       npm install webpack webpack-dev-server webpack-cli
       - restore_cache:
           keys: [frontend-build]
       - run:
@@ -76,21 +68,21 @@ jobs:
           key: backend-build
 
    test-frontend:
-     docker:
-       # Docker image here
-       - image: cimg/node:16.11
-     steps:
-       # Checkout code from git
-        - checkout
-       # Restore from cache
-        - restore_cache:
-          keys: [frontend-build]
-       # Your job code here
-        - run: 
-          name: Frontend test
-          command: |
-            cd frontend
-            npm test        
+    docker:
+      # Docker image here
+      - image: cimg/node:16.11
+    steps:
+      # Checkout code from git
+       - checkout
+      # Restore from cache
+       - restore_cache:
+         keys: [frontend-build]
+      # Your job code here
+       - run: 
+           name: Frontend test
+           command: |
+             cd frontend
+             npm test        
   # test-backend:
   #   docker:
   #     # Docker image here
