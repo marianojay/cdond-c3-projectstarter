@@ -62,26 +62,26 @@ jobs:
       - image: cimg/node:16.11
     steps:
       - checkout
-      - run:
-          name: install npm dependencies
-          command: |
-            #sudo npm install -g npm
-            #sudo npm install winston
-            #sudo npm install -g yarn
-            node -v
-            npm -v
-            yarn -v
-      - run:
-          name: install typescript
-          command: | 
-           sudo npm install -g typescript
-      - run:    
-          name: install nestjs
-          command: | 
-            #sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
-            #sudo nest update
-            #sudo npm install --save @nestjs
-            #sudo npm audit fix
+      #- run:
+      #    name: install npm dependencies
+      #    command: |
+      #      #sudo npm install -g npm
+      #      #sudo npm install winston
+      #      #sudo npm install -g yarn
+      #      node -v
+      #      npm -v
+      #      yarn -v
+      #- run:
+      #    name: install typescript
+      #    command: | 
+      #     sudo npm install -g typescript
+      #- run:    
+      #    name: install nestjs
+      #    command: | 
+      #      #sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
+      #      #sudo nest update
+      #      #sudo npm install --save @nestjs
+      #      #sudo npm audit fix
       - restore_cache:
           keys: [backend-build]
       - run:
