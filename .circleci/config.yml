@@ -59,7 +59,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: cimg/node
+      - image: cimg/node:16.11
     steps:
       - checkout
       - run:
