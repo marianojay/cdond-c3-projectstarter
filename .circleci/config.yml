@@ -67,15 +67,15 @@ jobs:
           command: |
             sudo npm install -g npm
       - restore_cache:
-        keys: [backend-build]
+          keys: [backend-build]
       - run:
-        name: Back-end build
-        command: |
-           cd backend
-           npm run build
+          name: Back-end build
+          command: |
+            cd backend
+            npm run build
       - save_cache:
-        paths: [backend/node_modules]
-        key: backend-build
+          paths: [backend/node_modules]
+          key: backend-build
 
   # test-frontend:
   #   docker:
