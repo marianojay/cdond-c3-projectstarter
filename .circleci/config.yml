@@ -48,7 +48,7 @@ jobs:
       - run:
           name: install webpacks
           command: |
-            npm -i webpack webpack-cli
+            npm install webpack webpack-cli
       # - run:
       #     name: run npm start
       #     command: |
