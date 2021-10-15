@@ -75,10 +75,10 @@ jobs:
           name: install typescript
           command: | 
            sudo npm install -g typescript
-      #- run:    
-          #name: install nestjs
-          #command: | 
-            #sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
+      - run:    
+          name: install nestjs
+          command: | 
+            sudo npm install --save @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express @nestjs/typeorm  @nestjs/passport @nestjs/cqrs @hapi/joi        
             #sudo npm install --save @nestjs
       - restore_cache:
           keys: [backend-build]
