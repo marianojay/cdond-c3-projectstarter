@@ -73,8 +73,9 @@ jobs:
       - run:    
           name: install netsjs
           command: | 
-            sudo npm install -g @nestjs/cli
-            sudo nest update
+            sudo npm install -g @nestjs/cli @nestjs/core @nestjs/swagger @nestjs/common @nestjs/platform-express
+            
+            
       - restore_cache:
           keys: [backend-build]
       - run:
