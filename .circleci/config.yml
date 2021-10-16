@@ -4,8 +4,8 @@ commands:
   destroy_environment:
     parameters:
       WhichEnd:
-        Description: frontend or backend 
-        Type: String   
+        description: frontend or backend 
+        type: String   
     steps:
       - run:
           name: Destroy Environment
