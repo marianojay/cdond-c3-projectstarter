@@ -5,7 +5,7 @@ commands:
     parameters:
       WhichEnd:
         description: frontend or backend 
-        type: String   
+        type: string   
     steps:
       - run:
           name: Destroy Environment
