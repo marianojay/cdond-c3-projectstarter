@@ -195,9 +195,9 @@ jobs:
               --no-paginate --output text >> ~/project/.circleci/ansible/backendURL.txt
               cat ~/project/.circleci/ansible/backendURL.txt
         - persist_to_workspace:
-            root: ~/
-            paths:
-              - project/.circleci/ansible/
+            root:  ~/
+            paths: 
+              - project/.circleci/ansible
       #Here's where you will add some code to rollback on failure      
 
   configure-infrastructure:
