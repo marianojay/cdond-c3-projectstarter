@@ -41,4 +41,4 @@
     - name: "Give permission to use port 80"
       become: yes
       shell: |
-        sudo setcap cap_net_bind_service=+ep /usr/local/bin/node
+        setcap cap_net_bind_service=+ep /usr/local/bin/node
