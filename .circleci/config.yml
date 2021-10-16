@@ -158,7 +158,7 @@ jobs:
               aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=UdaPeople \
-              --ID ${CIRCLE_WORKFLOW_ID:0:8} \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:8} \
               --stack-name backend-${CIRCLE_WORKFLOW_ID:0:8} \
               --region ${AWS_DEFAULT_REGION}
         - destroy_environment: 
@@ -169,7 +169,7 @@ jobs:
               aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=UdaPeople \
-              --ID ${CIRCLE_WORKFLOW_ID:0:8} \
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:8} \
               --stack-name frontend-${CIRCLE_WORKFLOW_ID:0:8} \
               --region ${AWS_DEFAULT_REGION}
         - destroy_environment: 
