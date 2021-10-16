@@ -1,0 +1,43 @@
+---
+
+    #Update/upgrade packages
+    - name: "update apt packages."
+      become: yes
+      apt:
+        update_cache: yes
+    #Install Nodejs
+    - name: "install node.js"
+      become: yes
+      apt: 
+        name: ["nodejs", "npm"]
+        state: latest
+        update_cache: yes
+    #Install pm2
+    - name: "install python for Ansible."
+      become: yes
+      apt: 
+        name: ["python"]
+        state: latest
+        update_cache: yes
+    
+    #install and Configure PM2 to run backend server
+    - name: "install pm2"
+      become: yes
+      apt: 
+        name: ["pm2"]
+        state: latest
+        update_cache: yes
+    
+    #https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-js-production-environment-on-an-ubuntu-vps
+      
+    - name: "install libcap2"
+      become: yes
+      apt:
+        name: ["libcap2-bin"]
+        state: latest
+        update_cache: yes
+
+    - name: "Give permission to use port 80"
+      become: yes
+      shell: |
+        sudo setcap cap_net_bind_service=+ep /usr/local/bin/node
