@@ -100,14 +100,22 @@ jobs:
              cd backend
              npm test 
             
-  # scan-frontend:
-  #   docker:
-  #     # Docker image here
-  #   steps:
-  #     # Checkout code from git
-  #     # Restore from cache
-  #     # Your job code here
-
+  scan-frontend:
+    docker:
+      # Docker image here
+      - image: cimg/node:16.11
+    steps:
+      # Checkout code from git
+       - checkout
+      # Restore from cache
+       - restore_cache:
+           keys: [frontend-build]
+      # Your job code here
+       - run: 
+           name: Frontend Audit
+           command: |
+             cd frontend
+             npm audit --audit-level=critical  
   # scan-backend:
   #   docker:
   #     # Docker image here
