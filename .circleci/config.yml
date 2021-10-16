@@ -4,7 +4,7 @@ commands:
   destroy_environment:
     parameters:
       WhichEnd:
-        Description: Front or Back 
+        Description: frontend or backend 
         Type: String   
     steps:
       - run:
@@ -159,7 +159,7 @@ jobs:
               --tags project=UdaPeople \
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:8} \
               --region ${AWS_DEFAULT_REGION}
-        - destroy_environment
+        - destroy_environment: backend
         # - run:
         #     name: Ensure front-end infrastructure exist
         #     command: |
@@ -325,7 +325,7 @@ workflows:
       #     requires: [build-backend]
       # - scan-frontend:
       #     requires: [build-frontend]
-       - deploy-infrastructure #deleted :
+      - deploy-infrastructure #deleted :
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       #     filters:
       #       branches:
