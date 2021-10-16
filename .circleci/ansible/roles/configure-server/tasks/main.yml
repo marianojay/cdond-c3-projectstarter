@@ -21,13 +21,14 @@
         update_cache: yes
     
     #install and Configure PM2 to run backend server
-    - name: "install pm2"
+    #https://stackoverflow.com/questions/55635239/failing-to-install-pm2-using-npm-package-on-ansible-2-7-on-debian-stretch    - name: "install pm2"
+    - name: Install PM2 Packages
       become: yes
-      apt: 
-        name: ["pm2"]
-        state: latest
-        update_cache: yes
-    
+      npm: 
+        name: pm2
+        global: yes
+        state: present
+
     #https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-js-production-environment-on-an-ubuntu-vps
       
     - name: "install libcap2"
