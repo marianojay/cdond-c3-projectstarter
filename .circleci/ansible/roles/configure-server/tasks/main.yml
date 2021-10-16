@@ -40,5 +40,6 @@
 
     - name: "Give permission to use port 80"
       become: yes
+      #had to ssh in to get path: /usr/bin/node
       shell: |
-        setcap cap_net_bind_service=+ep /usr/local/bin/node
+        setcap cap_net_bind_service=+ep /usr/bin/node
