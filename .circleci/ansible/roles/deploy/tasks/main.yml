@@ -16,7 +16,7 @@
   #https://www.mydailytutorials.com/how-to-copy-files-and-directories-in-ansible-using-copy-and-fetch-modules/
   become: yes
   copy:
-    src: "files/dist"
+    src: "backend/dist"
     dest: "~/web"
 
 - name: Launch backend
