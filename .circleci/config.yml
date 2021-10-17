@@ -312,22 +312,29 @@ jobs:
           command: aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:8} --delete
       # Here's where you will add some code to rollback on failure      
                     
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+   deploy-backend:
+     docker:
+      - image: python:3.7-alpine3.11
+     steps:
+      # Checkout code from git
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["04:ba:16:8d:68:13:6f:97:f7:f6:16:ee:c0:be:ec:10"] # From Additional Key added based on udacity.pem
+      # attach workspace
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # install the dependencies needed for your playbook
+            apk add --update ansible 
+            pip3 install awscli
+      - run:
+          name: Deploy backend
+          command: |
+            # Your code here
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
+      # Here's where you will add some code to rollback on failure  
 
 #   smoke-test:
 #     docker:
