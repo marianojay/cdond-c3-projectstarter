@@ -1,0 +1,24 @@
+---
+- name: "install dependencies"
+  become: yes
+  apt:
+    name: ["build-essential"]
+    state: latest
+    update_cache: yes
+
+- name: Creates directory
+  become: yes
+  file:
+    path: ~/web
+    state: directory
+
+- name: Copy Backend
+  #https://www.mydailytutorials.com/how-to-copy-files-and-directories-in-ansible-using-copy-and-fetch-modules/
+  become: yes
+  copy:
+    src: "files/dist"
+    dest: "~/web"
+
+- name: Launch backend
+  shell: |
+    pm2 ~/web/dist/main.js
