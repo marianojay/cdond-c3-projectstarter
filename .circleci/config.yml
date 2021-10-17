@@ -1,5 +1,7 @@
 version: 2.1
 #Original Config.yml files
+orbs: 
+  aws-cli: circleci/aws-cli@2.0.3
 commands:
   destroy_environment:
     parameters:
@@ -46,12 +48,18 @@ commands:
 jobs:
   make-container:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/node:16.11
     steps:
+      - aws-cli/setup 
       - run:
-          name: "install dependencies"
+          name: "NPM Test"
           command: |
-           yum install npm -y 
+           npm install
+      - run: 
+          name: "AWS Test"
+          command: | 
+            aws ec2 describe-instances
+            
 
   build-frontend:
     docker:
