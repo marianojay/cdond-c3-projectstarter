@@ -46,7 +46,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:16.11
     steps:
       - checkout
       - restore_cache:
@@ -258,26 +258,40 @@ jobs:
             curl -H "Content-Type: text/plain" -H "token: f280d222-8e74-4978-87ef-301abdf89772" --request PUT --data $data https://api.memstash.io/values/${CIRCLE_WORKFLOW_ID:0:8}
   #    # Here's where you will add some code to rollback on failure      
 
-#   deploy-frontend:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Get backend url
-#           command: |
-#             # your code here
-#             export API_URL="http://${BACKEND_IP}:3030"
-#             echo "${API_URL}"
-#       - run:
-#           name: Deploy frontend objects
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure      
+  deploy-frontend:
+    docker:
+      # Docker image here that supports AWS CLI
+      - image: cimg/node:16.11
+    steps:
+      # Checkout code from git
+      - checkout 
+      - run:
+           name: Install AWS Tools
+           command: |
+             # your code here
+             pip3 install awscli
+      - restore_cache:
+          keys: [frontend-build]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Get backend url
+          command: |
+            BACKEND_IP=$(cat ~/project/.circleci/ansible/backendURL.txt)
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+      - run:
+          name: Deploy frontend objects
+          command: |
+            # your code here
+            cd frontend
+            npm install
+            npm run build
+      - run: 
+          name: Move dist to bucket
+          working_directory: ./frontend
+          command: aws s3 sync dist s3://mybucket-${CIRCLE_WORKFLOW_ID:0:8} --delete
+      # Here's where you will add some code to rollback on failure      
                     
 #   deploy-backend:
 #     docker:
@@ -376,8 +390,8 @@ workflows:
            requires: [deploy-infrastructure]
       - run-migrations:
           requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
       # - smoke-test:
