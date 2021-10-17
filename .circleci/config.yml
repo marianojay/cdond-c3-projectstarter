@@ -51,7 +51,7 @@ jobs:
       - run:
           name: "install dependencies"
           command: |
-           npm install
+           apt-get install -y npm
 
   build-frontend:
     docker:
