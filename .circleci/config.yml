@@ -309,7 +309,7 @@ jobs:
       - run: 
           name: Move dist to bucket
           working_directory: ./frontend
-          command: aws s3 sync dist s3://mybucket-${CIRCLE_WORKFLOW_ID:0:8} --delete
+          command: aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:8} --delete
       # Here's where you will add some code to rollback on failure      
                     
 #   deploy-backend:
