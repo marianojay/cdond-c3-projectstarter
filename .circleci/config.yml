@@ -278,15 +278,17 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
+      #https://discuss.circleci.com/t/trying-to-use-the-aws-cli-or-any-circleci-orb-for-the-first-time-plus-how-to-run-shell-scripts-help-me-understand/36482/3
       - image: cimg/node:16.11
     steps:
       # Checkout code from git
       - checkout 
-      - run:
-           name: Install AWS Tools
-           command: |
-             # your code here
-             pip3 install awscli
+      - aws-cli/setup
+      #- run:
+      #     name: Install AWS Tools
+      #     command: |
+      #       # your code here
+      #       pip3 install awscli
       - restore_cache:
           keys: [frontend-build]
       - attach_workspace:
@@ -388,30 +390,30 @@ jobs:
 workflows:
   default:
     jobs:
-       - make-container
-      #- build-frontend
-      #- build-backend
-      #- test-frontend:
-      #    requires: [build-frontend]
-      #- test-backend:
-      #    requires: [build-backend]
-      #- scan-backend:
-      #    requires: [build-backend]
-      #- scan-frontend:
-      #    requires: [build-frontend]
-      #- deploy-infrastructure:
-      #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      # - make-container
+      - build-frontend
+      - build-backend
+      - test-frontend:
+         requires: [build-frontend]
+      - test-backend:
+         requires: [build-backend]
+      - scan-backend:
+         requires: [build-backend]
+      - scan-frontend:
+         requires: [build-frontend]
+      - deploy-infrastructure:
+         requires: [test-frontend, test-backend, scan-frontend, scan-backend]
           #filters:
-            #branches:
-            #  only: [test-feature-branch]
-      #- configure-infrastructure: 
-      #     requires: [deploy-infrastructure]
-      #- run-migrations:
-      #    requires: [configure-infrastructure]
-      #- deploy-frontend:
-      #    requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
+          #  branches:
+          #   only: [test-feature-branch]
+      - configure-infrastructure: 
+          requires: [deploy-infrastructure]
+      - run-migrations:
+         requires: [configure-infrastructure]
+      - deploy-frontend:
+         requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
