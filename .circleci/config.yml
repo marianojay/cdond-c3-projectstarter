@@ -2,7 +2,6 @@ version: 2.1
 #Original Config.yml files
 orbs: 
   aws-cli: circleci/aws-cli@2.0.3
-  ansible-playbook: orbss/ansible-playbook@0.0.5
 commands:
   destroy_environment:
     steps:
@@ -56,9 +55,9 @@ jobs:
           command: |
            npm install
       - run: 
-          name: "AWS Test"
+          name: "ansible Test"
           command: | 
-            aws ec2 describe-instances
+            ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
             
 
   build-frontend:
@@ -168,8 +167,8 @@ jobs:
              ##didn't run without force
              npm audit fix --audit-level=critical --force
        - save_cache:
-          paths: [backend/dist]
-          key: backend-dist
+          paths: [backend-build]
+          key: backend-build
        - destroy_environment
 
   deploy-infrastructure:
@@ -323,7 +322,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/node:16.11
+      - image: python:3.7-alpine3.11
     steps:
      # Checkout code from git
       - checkout
@@ -333,19 +332,19 @@ jobs:
     # attach workspace
       - attach_workspace:
          at: ~/
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       # install the dependencies needed for your playbook
-      #       apk add --update ansible 
-      #       pip3 install awscli
+      - run:
+          name: Install dependencies
+          command: |
+            # install the dependencies needed for your playbook
+            apk add --update ansible 
+            pip3 install awscli
       ##I think i need to persist the backend outupt so I can copy it here.
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Deploy backend
           command: |
              cd backend
-             npm install
-             npm rum build
              ls -l dist
              cp -r dist ~/project/.circleci/ansible/files
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
@@ -413,30 +412,30 @@ jobs:
 workflows:
   default:
     jobs:
-      # - make-container
-      - build-frontend
-      - build-backend
-      - test-frontend:
-         requires: [build-frontend]
-      - test-backend:
-         requires: [build-backend]
-      - scan-backend:
-         requires: [build-backend]
-      - scan-frontend:
-         requires: [build-frontend]
-      - deploy-infrastructure:
-         requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          #filters:
-          #  branches:
-          #   only: [test-feature-branch]
-      - configure-infrastructure: 
-          requires: [deploy-infrastructure]
-      - run-migrations:
-         requires: [configure-infrastructure]
-      - deploy-frontend:
-         requires: [run-migrations]
-      - deploy-backend:
-          requires: [run-migrations, deploy-frontend]
+       - make-container
+      # - build-frontend
+      # - build-backend
+      # - test-frontend:
+      #    requires: [build-frontend]
+      # - test-backend:
+      #    requires: [build-backend]
+      # - scan-backend:
+      #    requires: [build-backend]
+      # - scan-frontend:
+      #    requires: [build-frontend]
+      # - deploy-infrastructure:
+      #    requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      #     #filters:
+      #     #  branches:
+      #     #   only: [test-feature-branch]
+      # - configure-infrastructure: 
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #    requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #    requires: [run-migrations]
+      # - deploy-backend:
+      #     requires: [run-migrations, deploy-frontend]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
