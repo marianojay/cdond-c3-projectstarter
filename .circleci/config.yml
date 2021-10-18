@@ -333,6 +333,7 @@ jobs:
           name: Deploy backend
           command: |
              # Your code here
+             cp -r backend/dist ~/project/.circleci/ansible/files
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
     # Here's where you will add some code to rollback on failure  
 
