@@ -189,8 +189,6 @@ jobs:
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:8} \
               --stack-name backend-${CIRCLE_WORKFLOW_ID:0:8} \
               --region ${AWS_DEFAULT_REGION}
-        - destroy_environment: 
-            WhichEnd: "backend"
         - run:
             name: Ensure front-end infrastructure exists
             command: | 
@@ -200,8 +198,6 @@ jobs:
               --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:8} \
               --stack-name frontend-${CIRCLE_WORKFLOW_ID:0:8} \
               --region ${AWS_DEFAULT_REGION}
-        - destroy_environment: 
-            WhichEnd: "frontend"
         - run:
             name: Add back-end ip to ansible inventory
             command: |
@@ -354,7 +350,7 @@ jobs:
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
     # Here's where you will add some code to rollback on failure  
       - destroy_environment
-      
+
 #   smoke-test:
 #     docker:
 #       # Lightweight Docker image 
