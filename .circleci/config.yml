@@ -95,8 +95,11 @@ jobs:
       - save_cache:
           paths: 
             - backend/node_modules
-            - backend/dest
           key: backend-build
+      - persist_to_workspace:
+            root:  ~/
+            paths: 
+              - project/backend/dest
       - destroy_environment
 
   test-frontend:
