@@ -99,7 +99,7 @@ jobs:
       - persist_to_workspace:
             root:  ~/
             paths: 
-              - project/backend/dest
+              - backend/dest
       - destroy_environment
 
   test-frontend:
