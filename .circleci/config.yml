@@ -166,6 +166,9 @@ jobs:
              cd backend
              ##didn't run without force
              npm audit fix --audit-level=critical --force
+       - save_cache:
+          paths: [backend/dist]
+          key: backend-dist
        - destroy_environment
 
   deploy-infrastructure:
@@ -335,6 +338,8 @@ jobs:
             apk add --update ansible 
             pip3 install awscli
       #I think i need to persist the backend outupt so I can copy it here.
+      - restore_cache:
+           keys: [backend-dist]
       - run:
           name: Deploy backend
           command: |
