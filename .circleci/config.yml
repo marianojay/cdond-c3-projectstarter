@@ -2,6 +2,7 @@ version: 2.1
 #Original Config.yml files
 orbs: 
   aws-cli: circleci/aws-cli@2.0.3
+  ansible-playbook: orbss/ansible-playbook@0.0.5
 commands:
   destroy_environment:
     steps:
@@ -322,28 +323,29 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: cimg/node:16.11
     steps:
      # Checkout code from git
       - checkout
+      - ansible-playbook/setup
       - add_ssh_keys:
           fingerprints: ["04:ba:16:8d:68:13:6f:97:f7:f6:16:ee:c0:be:ec:10"] # From Additional Key added based on udacity.pem
     # attach workspace
       - attach_workspace:
          at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            # install the dependencies needed for your playbook
-            apk add --update ansible 
-            pip3 install awscli
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #       # install the dependencies needed for your playbook
+      #       apk add --update ansible 
+      #       pip3 install awscli
       #I think i need to persist the backend outupt so I can copy it here.
-      - restore_cache:
-           keys: [backend-dist]
       - run:
           name: Deploy backend
           command: |
-             # Your code here
+             cd backend
+             npm install
+             npm rum build
              ls -l backend/dist
              cp -r backend/dist ~/project/.circleci/ansible/files
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
@@ -434,7 +436,7 @@ workflows:
       - deploy-frontend:
          requires: [run-migrations]
       - deploy-backend:
-          requires: [run-migrations]
+          requires: [run-migrations, deploy-frontend]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
