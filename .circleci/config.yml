@@ -131,9 +131,12 @@ jobs:
        - restore_cache:
            keys: [backend-build]
       # Your job code here
+       - attach_workspace:
+          at: ~/
        - run: 
            name: Backend test
            command: |
+             ls -l
              cd backend
              ls -l 
              npm test 
