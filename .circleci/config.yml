@@ -93,7 +93,9 @@ jobs:
             npm run build
             ls -l 
       - save_cache:
-          paths: [backend/node_modules]
+          paths: 
+            - backend/node_modules
+            - backend/dest
           key: backend-build
       - destroy_environment
 
