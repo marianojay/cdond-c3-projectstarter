@@ -327,6 +327,7 @@ jobs:
     steps:
      # Checkout code from git
       - checkout
+      - aws-cli/setup
       - add_ssh_keys:
           fingerprints: ["04:ba:16:8d:68:13:6f:97:f7:f6:16:ee:c0:be:ec:10"] # From Additional Key added based on udacity.pem
     # attach workspace
@@ -345,8 +346,8 @@ jobs:
              cd backend
              npm install
              npm rum build
-             ls -l backend/dist
-             cp -r backend/dist ~/project/.circleci/ansible/files
+             ls -l dist
+             cp -r dist ~/project/.circleci/ansible/files
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
     # Here's where you will add some code to rollback on failure  
       - destroy_environment
