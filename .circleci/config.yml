@@ -4,16 +4,20 @@ orbs:
   aws-cli: circleci/aws-cli@2.0.3
 commands:
   destroy_environment:
-    parameters:
-      WhichEnd:
-        description: frontend or backend 
-        type: string   
+    #parameters:
+    #  WhichEnd:
+    #    description: frontend or backend 
+    #    type: string   
     steps:
       - run:
           name: Destroy Environment
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name <<parameters.WhichEnd>>-${CIRCLE_WORKFLOW_ID:0:8}
+            # aws cloudformation delete-stack --stack-name <<parameters.WhichEnd>>-${CIRCLE_WORKFLOW_ID:0:8}
+            aws cloudformation delete-stack --stack-name frontend-${CIRCLE_WORKFLOW_ID:0:8}
+            aws cloudformation delete-stack --stack-name backend-${CIRCLE_WORKFLOW_ID:0:8}
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:8} --recursive
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:8}
 #  destroy-environment:
 #    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
 #    parameters:
@@ -77,6 +81,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - destroy_environment 
 
   build-backend:
     docker:
@@ -94,6 +99,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - destroy_environment
 
   test-frontend:
     docker:
@@ -110,7 +116,9 @@ jobs:
            name: Frontend test
            command: |
              cd frontend
-             npm test        
+             npm test    
+       - destroy_environment
+
   test-backend:
     docker:
       # Docker image here
@@ -127,7 +135,8 @@ jobs:
            command: |
              cd backend
              npm test 
-            
+       - destroy_environment
+
   scan-frontend:
     docker:
       # Docker image here
@@ -143,7 +152,8 @@ jobs:
            name: Frontend Audit
            command: |
              cd frontend
-             npm audit fix --audit-level=critical --force  
+             npm audit fix --audit-level=critical --force
+       - destroy_environment
   scan-backend:
     docker:
       # Docker image here
@@ -160,7 +170,8 @@ jobs:
            command: |
              cd backend
              ##didn't run without force
-             npm audit fix --audit-level=critical --force 
+             npm audit fix --audit-level=critical --force
+       - destroy_environment
 
   deploy-infrastructure:
       docker:
@@ -215,7 +226,8 @@ jobs:
             root:  ~/
             paths: 
               - project/.circleci/ansible
-      #Here's where you will add some code to rollback on failure      
+      #Here's where you will add some code to rollback on failure
+        - destroy_environment      
 
   configure-infrastructure:
     docker:
@@ -243,6 +255,7 @@ jobs:
             # Your code here
             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
+      - destroy_environment
 
   run-migrations:
     docker:
@@ -260,7 +273,6 @@ jobs:
             npm run migrations >> migration_status.txt
             # Hint: The migration output will include "has been executed successfully" if any new migrations were applied.
             cat migration_status.txt
-
       - run:
           name: Send migration results to memstash
           command: |
@@ -274,6 +286,7 @@ jobs:
             fi            
             curl -H "Content-Type: text/plain" -H "token: f280d222-8e74-4978-87ef-301abdf89772" --request PUT --data $data https://api.memstash.io/values/${CIRCLE_WORKFLOW_ID:0:8}
   #    # Here's where you will add some code to rollback on failure      
+      - destroy_environment
 
   deploy-frontend:
     docker:
@@ -311,7 +324,8 @@ jobs:
           working_directory: ./frontend
           command: aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:8} --delete
       # Here's where you will add some code to rollback on failure      
-                    
+      - destroy_environment
+
   deploy-backend:
     docker:
       - image: python:3.7-alpine3.11
@@ -329,14 +343,18 @@ jobs:
             # install the dependencies needed for your playbook
             apk add --update ansible 
             pip3 install awscli
+            - run:
+      #I think i need to persist the backend outupt so I can copy it here.
       - run:
           name: Deploy backend
           command: |
              # Your code here
+             ls -l backend/dist
              cp -r backend/dist ~/project/.circleci/ansible/files
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
     # Here's where you will add some code to rollback on failure  
-
+      - destroy_environment
+      
 #   smoke-test:
 #     docker:
 #       # Lightweight Docker image 
