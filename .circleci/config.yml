@@ -319,6 +319,9 @@ jobs:
             BACKEND_IP=$(cat ~/project/.circleci/ansible/backendURL.txt)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
+            echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            cat frontend/.env
+
       - run:
           name: Deploy frontend objects
           command: |
@@ -326,10 +329,9 @@ jobs:
             cd frontend
             npm install
             npm run build
-      - run: 
-          name: Move dist to bucket
-          working_directory: ./frontend
-          command: aws s3 sync dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:8} --delete
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:8} --recursive
+
       # Here's where you will add some code to rollback on failure      
       - destroy_environment
 
@@ -356,12 +358,17 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-             cd backend
-             ls -l dist
-             mkdir -p ~/project/.circleci/ansible/roles/deploy/files/dist
-             cp -r dist ~/project/.circleci/ansible/roles/deploy/files/dist
-             ls -l ~/project/.circleci/ansible/roles/deploy/files/dist
-             ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+
     # Here's where you will add some code to rollback on failure  
       #- destroy_environment
 
