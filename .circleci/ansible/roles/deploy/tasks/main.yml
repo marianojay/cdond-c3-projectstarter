@@ -12,11 +12,11 @@
     path: ~/web
     state: directory
 
-- name: Copy Backend
+- name: Extract Backend
   #https://www.mydailytutorials.com/how-to-copy-files-and-directories-in-ansible-using-copy-and-fetch-modules/
   become: yes
-  copy:
-    src: "dist"
+  unarchive:
+    src: "artifact.tar.gz"
     dest: "~/web"
 
 - name: Launch backend
