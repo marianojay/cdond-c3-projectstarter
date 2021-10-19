@@ -121,7 +121,7 @@ jobs:
            name: Frontend test
            command: |
              cd frontend
-             npm test    
+             #npm test    
        - destroy_environment
 
   test-backend:
@@ -358,8 +358,9 @@ jobs:
           command: |
              cd backend
              ls -l dist
-             cp -r dist ~/project/.circleci/ansible/roles/deploy/files
-             ls -l ~/project/.circleci/ansible/roles/deploy/files
+             mkdir -p ~/project/.circleci/ansible/roles/deploy/files/dist
+             cp -r dist ~/project/.circleci/ansible/roles/deploy/files/dist
+             ls -l ~/project/.circleci/ansible/roles/deploy/files/dist
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
     # Here's where you will add some code to rollback on failure  
       - destroy_environment
