@@ -359,6 +359,7 @@ jobs:
              cd backend
              ls -l dist
              cp -r dist ~/project/.circleci/ansible/roles/deploy/files
+             ls -l ~/project/.circleci/ansible/roles/deploy/files
              ansible-playbook -i ~/project/.circleci/ansible/inventory.txt ~/project/.circleci/ansible/deploy-backend.yml
     # Here's where you will add some code to rollback on failure  
       - destroy_environment
