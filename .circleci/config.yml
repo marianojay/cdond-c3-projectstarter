@@ -354,6 +354,7 @@ jobs:
             # install the dependencies needed for your playbook
             apk add --update npm
             apk add --update ansible 
+            apk add --update nodejs
             pip3 install awscli
       ##I think i need to persist the backend outupt so I can copy it here.
       - restore_cache:
