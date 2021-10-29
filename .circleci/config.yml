@@ -363,7 +363,6 @@ jobs:
           name: Deploy backend
           command: |
             cd backend
-
             # echo ENVIROMENT=development > ".env"
             # echo TYPEORM_CONNECTION=postgres >> ".env"
             # echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> ".env"
